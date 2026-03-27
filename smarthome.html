@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Home Dashboard</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #00FF99;
+}
+
+/* GRID (3 per row) */
+.dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.card {
+    width: 20%;
+    min-width: 50px;
+    background: #1E1E1E;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.off { background: #E74C3C; }
+.on { background: #2ECC71; }
+
+/* Delete button */
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    background: red;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    font-size: 14px;
+    text-align: center;
+    color: #00FF99;
+    text-shadow: 0 0 5px #00FF99;
+}
+</style>
+</head>
+
+<body>
+
+<h1>SMART HOME DASHBOARD</h1>
+
+<button id="addDeviceBtn" class="btn on">+ Add new device</button>
+
+<section class="dashboard" id="dashboard">
+    <div class="card">
+        <button class="delete-btn">x</button>
+        <p>Light</p>
+        <button class="btn off">OFF</button>
+    </div>
+
+    <div class="card">
+        <button class="delete-btn">x</button>
+        <p>Fan</p>
+        <button class="btn off">OFF</button>
+    </div>
+
+    <div class="card">
+        <button class="delete-btn">x</button>
+        <p>TV</p>
+        <button class="btn off">OFF</button>
+    </div>
+</section>
+
+<!-- ✅ Footer -->
+<footer>
+    created by @Amiel
+    <img src="c:\xampp\htdocs\Screenshot 2026-03-23 091700.png" alt="Amiel photo">
+</footer>
+
+<script>
+const dashboard = document.getElementById('dashboard');
+
+// Toggle ON/OFF
+function addToggle(card, button) {
+    card.addEventListener('click', () => {
+        const isOn = button.classList.contains('on');
+        button.classList.toggle('on', !isOn);
+        button.classList.toggle('off', isOn);
+        button.textContent = isOn ? 'OFF' : 'ON';
+    });
+}
+
+// Delete
+function addDelete(card, deleteBtn) {
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        card.remove();
+    });
+}
+
+// Initialize existing
+document.querySelectorAll('.card').forEach(card => {
+    const button = card.querySelector('.btn');
+    const deleteBtn = card.querySelector('.delete-btn');
+
+    addToggle(card, button);
+    addDelete(card, deleteBtn);
+});
+
+// Create device
+function createDevice(name) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.textContent = 'x';
+
+    const title = document.createElement('p');
+    title.textContent = name;
+
+    const button = document.createElement('button');
+    button.classList.add('btn', 'off');
+    button.textContent = 'OFF';
+
+    card.appendChild(deleteBtn);
+    card.appendChild(title);
+    card.appendChild(button);
+
+    addToggle(card, button);
+    addDelete(card, deleteBtn);
+
+    dashboard.appendChild(card);
+}
+
+// Add device
+document.getElementById('addDeviceBtn').addEventListener('click', () => {
+    const name = prompt("Enter device name:");
+    if (name) createDevice(name);
+});
+</script>
+
+</body>
+</html>
